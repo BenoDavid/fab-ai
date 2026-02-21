@@ -1,0 +1,19 @@
+{
+  "target": "needed_qty",
+  "feature_cols": [
+    "po",
+    "style",
+    "total_qty_to_produce",
+    "estimated_fabrics_needed",
+    "requested_fabrics_qty"
+  ],
+  "categorical_cols": [
+    "po",
+    "style"
+  ],
+  "numeric_cols": [
+    "total_qty_to_produce",
+    "estimated_fabrics_needed",
+    "requested_fabrics_qty"
+  ]
+}

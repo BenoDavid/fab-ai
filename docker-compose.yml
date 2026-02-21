@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  trainer:
+    build: .
+    image: fab-ai:latest
+    container_name: fab-ai-trainer
+    command: >
+      python src/train.py
+      --data_path data/sample_fabric_data.csv
+      --target needed_qty
+      --cat_cols po style
+      --num_cols total_qty_to_produce estimated_fabrics_needed requested_fabrics_qty
+      --iterations 1200 --learning_rate 0.05 --depth 8 --l2_leaf_reg 6.0
+    volumes:
+      - ./data:/app/data
+      - ./model:/app/model
+    restart: "no"
+
+  api:
+    build: .
+    image: fab-ai:latest
+    container_name: fab-ai-api
+    environment:
+      - MODEL_DIR=/app/model
+    command: >
+      uvicorn src.app:app --host 0.0.0.0 --port 8000
+    depends_on:
+      - trainer
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./model:/app/model
+    restart: unless-stopped
